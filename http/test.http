@@ -1,0 +1,14 @@
+### PING
+GET http://localhost:8080/ping
+
+### POST
+POST http://localhost:8080/posts
+Content-Type: application/json
+
+{
+  "title": "Titulo",
+  "content": "Content"
+}
+
+### GET
+GET http://localhost:8080/posts

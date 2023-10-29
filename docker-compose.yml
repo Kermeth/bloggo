@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: bloggo
+
+  bloggo:
+    container_name: bloggo
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+        MONGO_HOST: mongo
+        MONGO_PORT: 27017
+    depends_on:
+      - mongo
