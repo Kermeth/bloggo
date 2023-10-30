@@ -1,22 +1,20 @@
-# syntax=docker/dockerfile:1
+# Usar una imagen de Go como base para compilar la aplicación
+FROM golang:1.19-alpine AS builder
 
-FROM golang:1.19-alpine
-
-# Set destination for COPY
+# Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Download Go modules
-COPY go.mod go.sum ./
-RUN go mod download
+# Copiar el código fuente de la aplicación al directorio de trabajo
+COPY . .
 
-# Copy the source code. Note the slash at the end, as explained in
-# https://docs.docker.com/engine/reference/builder/#copy
-COPY *.go ./
+# Compilar la aplicación
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o myapp .
 
-# Build
-RUN go build -o /go-app
+# Crear una imagen de scratch para reducir el tamaño de la imagen
+FROM scratch
 
-EXPOSE 8080
+# Copiar el ejecutable de la aplicación desde la imagen del compilador a la imagen scratch
+COPY --from=builder /app/myapp /myapp
 
-# Run
-CMD ["/go-app"]
+# Establecer el comando de entrada (entrypoint) para la imagen scratch
+ENTRYPOINT ["/myapp"]
