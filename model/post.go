@@ -1,4 +1,4 @@
-package main
+package model
 
 import (
 	"github.com/google/uuid"
@@ -12,7 +12,7 @@ type Post struct {
 	Created string    `json:"created"`
 }
 
-func createPost(title string, content string) Post {
+func New(title string, content string) Post {
 	p := Post{uuid.New(), title, content, time.Now().Format("2006-01-02 15:04:05")}
 	return p
 }
