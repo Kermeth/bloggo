@@ -1,20 +1,9 @@
-# Usar una imagen de Go como base para compilar la aplicación
-FROM golang:1.19-alpine AS builder
-
-# Establecer el directorio de trabajo dentro del contenedor
+FROM golang:1.21.3-alpine AS builder
 WORKDIR /app
-
-# Copiar el código fuente de la aplicación al directorio de trabajo
 COPY . .
+RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o myapp .
 
-# Compilar la aplicación
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o myapp .
-
-# Crear una imagen de scratch para reducir el tamaño de la imagen
-FROM scratch
-
-# Copiar el ejecutable de la aplicación desde la imagen del compilador a la imagen scratch
+FROM scratch AS runner
 COPY --from=builder /app/myapp /myapp
-
-# Establecer el comando de entrada (entrypoint) para la imagen scratch
+EXPOSE 8080
 ENTRYPOINT ["/myapp"]
