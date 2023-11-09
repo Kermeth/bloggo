@@ -12,8 +12,8 @@ type Post struct {
 	Created string `json:"created"`
 }
 
-func New(title string, content string) Post {
-	p := Post{
+func New(title string, content string) *Post {
+	p := &Post{
 		uuid.NewString(),
 		title,
 		content,

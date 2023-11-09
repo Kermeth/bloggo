@@ -4,7 +4,6 @@ import (
 	"bloggo/internal/model"
 	"bloggo/internal/repository"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson"
 	"log"
 	"net/http"
 )
@@ -32,17 +31,15 @@ func healthcheck(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "pong"})
 }
 
-var postCollection = repository.GetDBClient().Database("blog").Collection("posts")
-
 func CreatePost(context *gin.Context) {
-	var post model.Post
+	var post *model.Post
 	err := context.ShouldBindJSON(&post)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	post = model.New(post.Title, post.Content)
-	_, err = postCollection.InsertOne(context, post)
+	_, err = repository.SavePost(post)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -51,20 +48,10 @@ func CreatePost(context *gin.Context) {
 }
 
 func GetPosts(context *gin.Context) {
-	cursor, err := postCollection.Find(context, bson.D{})
+	posts, err := repository.GetPosts()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
-	}
-	var posts []model.Post
-	for cursor.Next(context) {
-		var post model.Post
-		err := cursor.Decode(&post)
-		if err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		posts = append(posts, post)
 	}
 	context.JSON(http.StatusOK, gin.H{"posts": posts})
 }
