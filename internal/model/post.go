@@ -13,6 +13,11 @@ type Post struct {
 }
 
 func New(title string, content string) Post {
-	p := Post{uuid.NewString(), title, content, time.Now().Format("2006-01-02 15:04:05")}
+	p := Post{
+		uuid.NewString(),
+		title,
+		content,
+		time.Now().Format("2006-01-02 15:04:05"),
+	}
 	return p
 }

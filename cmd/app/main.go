@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bloggo/config"
-	"bloggo/model"
+	"bloggo/internal/model"
+	"bloggo/internal/repository"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
@@ -32,7 +32,7 @@ func healthcheck(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "pong"})
 }
 
-var postCollection = config.GetDBClient().Database("blog").Collection("posts")
+var postCollection = repository.GetDBClient().Database("blog").Collection("posts")
 
 func CreatePost(context *gin.Context) {
 	var post model.Post
