@@ -1,4 +1,4 @@
-package model
+package post
 
 import (
 	"github.com/google/uuid"
@@ -6,7 +6,7 @@ import (
 )
 
 type Post struct {
-	ID      string `json:"id"`
+	Id      string `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
 	Created string `json:"created"`

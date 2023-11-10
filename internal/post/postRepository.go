@@ -1,26 +1,26 @@
-package repository
+package post
 
 import (
-	"bloggo/internal/model"
+	"bloggo/internal/repository"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var postCollection = GetDBClient().Database("blog").Collection("posts")
+var postCollection = repository.GetDBClient().Database("blog").Collection("posts")
 
-func SavePost(post *model.Post) (*mongo.InsertOneResult, error) {
+func SavePost(post *Post) (*mongo.InsertOneResult, error) {
 	return postCollection.InsertOne(context.Background(), post)
 }
 
-func GetPosts() ([]model.Post, error) {
+func GetPosts() ([]Post, error) {
 	cursor, err := postCollection.Find(context.Background(), bson.D{})
 	if err != nil {
 		return nil, err
 	}
-	var posts []model.Post
+	var posts []Post
 	for cursor.Next(context.Background()) {
-		var post model.Post
+		var post Post
 		err := cursor.Decode(&post)
 		if err != nil {
 			return nil, err

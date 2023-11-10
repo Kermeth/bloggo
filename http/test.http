@@ -1,6 +1,24 @@
 ### PING
 GET http://localhost:8080/ping
 
+### SIGNUP
+POST http://localhost:8080/signUp
+Content-Type: application/json
+
+{
+  "email": "marc@test.es",
+  "password": "password"
+}
+
+### SIGNIN
+POST http://localhost:8080/signIn
+Content-Type: application/json
+
+{
+  "email": "marc@test.es",
+  "password": "password"
+}
+
 ### POST
 POST http://localhost:8080/posts
 Content-Type: application/json
