@@ -2,7 +2,7 @@
 
 ## Next Steps
 
-- [ ] Add an authentication system
+- [x] Add an authentication system
 - [ ] Add a feed system
 - [ ] Add a search system
 - [ ] Add a comment system
