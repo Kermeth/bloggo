@@ -1,13 +1,14 @@
 package post
 
 import (
+	"bloggo/internal/auth"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func Handlers(server *gin.Engine) {
 	// posts
-	server.POST("/posts", createPost)
+	server.POST("/posts", auth.CheckToken, createPost)
 	server.GET("/posts", getPosts)
 }
 

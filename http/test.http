@@ -6,7 +6,7 @@ POST http://localhost:8080/signUp
 Content-Type: application/json
 
 {
-  "email": "marc@test.es",
+  "email": "marc@test.com",
   "password": "password"
 }
 
@@ -15,16 +15,19 @@ POST http://localhost:8080/signIn
 Content-Type: application/json
 
 {
-  "email": "marc@test.es",
+  "email": "marc@test.com",
   "password": "password"
 }
 
+> {% client.global.set("token", response.body.token) %}
+
 ### POST
 POST http://localhost:8080/posts
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "title": "Titulo",
+  "title": "Title",
   "content": "Content"
 }
 
