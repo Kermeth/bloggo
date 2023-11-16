@@ -17,6 +17,8 @@ func main() {
 
 	// system
 	server.GET("/ping", healthcheck)
+
+	// post
 	post.Handlers(server)
 
 	err := server.Run(":8080")

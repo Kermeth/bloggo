@@ -17,7 +17,7 @@ func New(title string, content string) *Post {
 		uuid.NewString(),
 		title,
 		content,
-		time.Now().Format("2006-01-02 15:04:05"),
+		time.Now().Format(time.RFC3339),
 	}
 	return p
 }
