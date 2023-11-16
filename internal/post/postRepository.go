@@ -5,9 +5,11 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"os"
 )
 
-var postCollection = repository.GetDBClient().Database("blog").Collection("posts")
+var db = os.Getenv("MONGO_DB")
+var postCollection = repository.GetDBClient().Database(db).Collection("posts")
 
 func SavePost(post *Post) (*mongo.InsertOneResult, error) {
 	return postCollection.InsertOne(context.Background(), post)

@@ -9,6 +9,8 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: bloggo
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/:ro
 
   bloggo:
     container_name: bloggo
@@ -21,5 +23,6 @@ services:
     environment:
         MONGO_HOST: mongo
         MONGO_PORT: 27017
+        MONGO_DB: bloggo
     depends_on:
       - mongo

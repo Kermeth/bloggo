@@ -5,9 +5,11 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"os"
 )
 
-var accountsCollection = repository.GetDBClient().Database("blog").Collection("accounts")
+var db = os.Getenv("MONGO_DB")
+var accountsCollection = repository.GetDBClient().Database(db).Collection("accounts")
 
 func SaveAccount(account *Account) (*mongo.InsertOneResult, error) {
 	return accountsCollection.InsertOne(context.Background(), account)
