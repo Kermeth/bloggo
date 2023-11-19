@@ -3,8 +3,8 @@
 ## Next Steps
 
 - [x] Add an authentication system
-- [ ] Add a feed system
-- [ ] Add a search system
+- [x] Add a feed system
+- [x] Add a search system
 - [ ] Add a comment system
 - [ ] Add a like system
 - [ ] Add a share system
