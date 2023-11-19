@@ -32,4 +32,4 @@ Content-Type: application/json
 }
 
 ### GET
-GET http://localhost:8080/posts
+GET http://localhost:8080/posts?page=3&limit=10

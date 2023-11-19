@@ -5,6 +5,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
 )
 
@@ -15,8 +16,9 @@ func SavePost(post *Post) (*mongo.InsertOneResult, error) {
 	return postCollection.InsertOne(context.Background(), post)
 }
 
-func GetPosts() ([]Post, error) {
-	cursor, err := postCollection.Find(context.Background(), bson.D{})
+func GetPosts(page, limit int64) ([]Post, error) {
+	opts := options.Find().SetSort(bson.D{{"created", 1}}).SetSkip(page * limit).SetLimit(limit)
+	cursor, err := postCollection.Find(context.Background(), bson.D{}, opts)
 	if err != nil {
 		return nil, err
 	}
