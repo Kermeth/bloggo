@@ -4,6 +4,7 @@ import (
 	"bloggo/internal/repository"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
@@ -16,9 +17,16 @@ func SavePost(post *Post) (*mongo.InsertOneResult, error) {
 	return postCollection.InsertOne(context.Background(), post)
 }
 
-func GetPosts(page, limit int64) ([]Post, error) {
+func GetPosts(page, limit int64, search string) ([]Post, error) {
 	opts := options.Find().SetSort(bson.D{{"created", 1}}).SetSkip(page * limit).SetLimit(limit)
-	cursor, err := postCollection.Find(context.Background(), bson.D{}, opts)
+	var searchOpt bson.D
+	if search != "" {
+		regex := bson.D{{"$regex", primitive.Regex{Pattern: search, Options: "i"}}}
+		searchOpt = bson.D{{"title", regex}}
+	} else {
+		searchOpt = bson.D{}
+	}
+	cursor, err := postCollection.Find(context.Background(), searchOpt, opts)
 	if err != nil {
 		return nil, err
 	}

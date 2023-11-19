@@ -33,6 +33,7 @@ func getPosts(context *gin.Context) {
 	// Query Params
 	page := context.DefaultQuery("page", "0")
 	limit := context.DefaultQuery("limit", "10")
+	search := context.DefaultQuery("search", "")
 	// Convert to int
 	pageInt, err := strconv.ParseInt(page, 10, 64)
 	limitInt, err := strconv.ParseInt(limit, 10, 64)
@@ -41,7 +42,7 @@ func getPosts(context *gin.Context) {
 		return
 	}
 	// Query Posts
-	posts, err := GetPosts(pageInt, limitInt)
+	posts, err := GetPosts(pageInt, limitInt, search)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
